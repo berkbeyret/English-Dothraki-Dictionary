@@ -24,6 +24,12 @@ class Trie {
     TrieNode *newTrieNode();
 
     void insert(string word, string meaning);
+
+    int countChildren(TrieNode *node, int *index);
+
+    string search(string word);
+
+    string deleteWord(string word, int depth);
 };
 
 
