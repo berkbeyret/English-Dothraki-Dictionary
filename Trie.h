@@ -29,7 +29,7 @@ class Trie {
 
     string search(string word);
 
-    string deleteWord(string word, int depth);
+    string deleteWord(string word);
 };
 
 

@@ -6,7 +6,7 @@ using namespace std;
 #include "IO.h"
 
 int main() {
-    vector<string> in = IO::read("input1.txt");
+    vector<string> in = IO::read("input2.txt");
     auto t = new Trie();
     string i;
     char delimiter1 = '(';
@@ -68,12 +68,29 @@ int main() {
         //-----------------------------------------------
 
         if(command == "delete"){ //
+            string componentDel;
+            componentDel = i.substr(7,i.size());
+            componentDel.pop_back();
+            vector<string> delVector;
+
+            delVector.push_back(componentDel);
+
+            for(int i = 0; i < delVector.size(); i++){
+                string key = delVector[i];
+                string result = t->deleteWord(key);
+                cout << result << endl;
+            }
+
+
+
+
 
         }
 
         //-------------------------------------------------------
 
     }
+
 
     return 0;
 }

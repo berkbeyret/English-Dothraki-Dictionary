@@ -45,21 +45,25 @@ string Trie::search(string word){
     for (int i = 0; i < word.length(); i++){
 
         int index = word[i] - 'a';
+        int firstIndex = word[0] - 'a';
 
-        if (!root->children[index]){
-            return "no record";
+        if (!temp->children[index]){
+            if(!root->children[firstIndex]){
+                return "no record";
+            }
+            else{
+                return "incorrect Dothraki word";
+            }
+
         }
 
         temp = temp->children[index];
         prefix.push_back('a' + index);
     }
 
+
     if(temp->isEndOfWord == false){
         return "not enough Dothraki word";
-    }
-
-    else if(temp->isEndOfWord == true && word != prefix){
-        return "incorrect Dothraki word";
     }
 
     else if(temp->isEndOfWord == true && word == prefix){
@@ -68,26 +72,33 @@ string Trie::search(string word){
 
 }
 
-string Trie::deleteWord(string word, int depth = 0){
+string Trie::deleteWord(string word){
     TrieNode* temp = root;
     string prefix;
+    int index;
 
     for(int i = 0; i < word.length(); i++){
         int index = word[i] - 'a';
+        int firstIndex = word[0] - 'a';
 
-        if (!root->children[index]){
-            return "no record";
+        if (!temp->children[index]){
+            if(!root->children[firstIndex]){
+                return "no record";
+            }
+            else{
+                return "incorrect Dothraki word";
+            }
         }
 
         temp = temp->children[index];
         prefix.push_back('a' + index);
     }
 
-    if(word.size() < prefix.size()){
+    if(countChildren(temp,&index) > 0 && temp->isEndOfWord == false){
         return "not enough Dothraki word";
     }
 
-    else if(word.size() == prefix.size() && word != prefix){
+    else if(countChildren(temp, &index) <= 0  && word != prefix){
         return "incorrect Dothraki word";
     }
 
@@ -97,6 +108,8 @@ string Trie::deleteWord(string word, int depth = 0){
         return '"' + word +  '"' + " deletion is successful";
     };
 }
+
+
 
 int Trie::countChildren(TrieNode *node, int *index){
     int count = 0;
