@@ -5,9 +5,16 @@ using namespace std;
 #include "Trie.h"
 #include "IO.h"
 
-int main() {
-    vector<string> in = IO::read("input2.txt");
+int main(int argc, char** argv) {
+    string first = argv[1];
+    string second = argv[2];
+
+    freopen(argv[2], "w", stdout);
+    freopen(argv[2], "a", stdout);
+
+    vector<string> in = IO::read(argv[1]);
     auto t = new Trie();
+
     string i;
     char delimiter1 = '(';
     char delimiter2 = ',';

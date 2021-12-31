@@ -15,22 +15,16 @@ class Trie {
 
     public:
 
-    string getMeaning(Trie *root, const string &word);
+        TrieNode *newTrieNode();
 
-    bool isEmpty(Trie *root);
+        void insert(string word, string meaning);
 
-    Trie *remove(Trie *root, string word, int level);
+        int countChildren(TrieNode *node, int *index);
 
-    TrieNode *newTrieNode();
+        string search(string word);
 
-    void insert(string word, string meaning);
-
-    int countChildren(TrieNode *node, int *index);
-
-    string search(string word);
-
-    string deleteWord(string word);
+        string deleteWord(string word);
 };
 
 
-#endif //ASSIGNMENT4_TRIE_H
+#endif

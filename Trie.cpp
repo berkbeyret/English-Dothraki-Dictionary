@@ -1,14 +1,14 @@
 #include "Trie.h"
 
+vector<string> insertKeys; //inserted words for check
+
 struct TrieNode{
     TrieNode *children[alphabetSize];
     bool isEndOfWord;
     string meaning;
-
 };
 
-
-TrieNode* Trie::newTrieNode(){
+TrieNode* Trie::newTrieNode(){ // create node
     TrieNode* node = new TrieNode;
     node->isEndOfWord = false;
     for(int i = 0; i < alphabetSize; i++){
@@ -17,25 +17,36 @@ TrieNode* Trie::newTrieNode(){
     return node;
 }
 
-//insert
 void Trie::insert(string word, string meaning){
 
     TrieNode* temp = root;
     for (int i = 0; i < word.length(); i++) {
         int index = word[i] - 'a';
 
-        // Make a new node if there is no path
+        // create new node if there isn't any path
         if(!temp -> children[index]){
             temp->children[index] = newTrieNode();
         }
         temp = temp->children[index];
     }
 
-    // Mark end of word and store the meaning
+    if (!count(insertKeys.begin(), insertKeys.end(), word)) {
+        cout << '"' + word + '"' + " was added" << endl;
+        insertKeys.push_back(word);
+    }
+    else {
+        if(temp->meaning == meaning){
+            cout << '"' + word + '"' + " already exist" << endl;
+        }
+        else{
+            cout << '"' + word + '"' + " was updated" << endl;
+        }
+    }
+
+    //This is end of the word and we're storing the meaning
+
     temp->isEndOfWord = true;
     temp->meaning = meaning;
-
-    cout << '"' + word + '"' + " was added" << endl;
 }
 
 string Trie::search(string word){
@@ -54,13 +65,10 @@ string Trie::search(string word){
             else{
                 return "incorrect Dothraki word";
             }
-
         }
-
         temp = temp->children[index];
         prefix.push_back('a' + index);
     }
-
 
     if(temp->isEndOfWord == false){
         return "not enough Dothraki word";
@@ -86,7 +94,7 @@ string Trie::deleteWord(string word){
                 return "no record";
             }
             else{
-                return "incorrect Dothraki word";
+                return "incorrect Dothraki word"; //node has no leaf and word and prefix are not same
             }
         }
 
@@ -94,15 +102,11 @@ string Trie::deleteWord(string word){
         prefix.push_back('a' + index);
     }
 
-    if(countChildren(temp,&index) > 0 && temp->isEndOfWord == false){
+    if(countChildren(temp,&index) > 0 && temp->isEndOfWord == false){ //node has leaf and node isn't on the end of the word
         return "not enough Dothraki word";
     }
 
-    else if(countChildren(temp, &index) <= 0  && word != prefix){
-        return "incorrect Dothraki word";
-    }
-
-    else if(word.size() == prefix.size() && word == prefix){
+    else if(word.size() == prefix.size() && word == prefix){ //makes the end of the word false and deletes the meaning
         temp->isEndOfWord = false;
         temp->meaning = "";
         return '"' + word +  '"' + " deletion is successful";
@@ -110,8 +114,7 @@ string Trie::deleteWord(string word){
 }
 
 
-
-int Trie::countChildren(TrieNode *node, int *index){
+int Trie::countChildren(TrieNode *node, int *index){ //return the integer how many children the node has
     int count = 0;
     for (int i = 0; i < alphabetSize; i++){
 
